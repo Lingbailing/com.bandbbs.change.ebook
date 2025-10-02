@@ -2,11 +2,7 @@
 
 ## 本资源只允许小米手环 10 安装使用
 
-### 喵喵电子书多端设计稿  
-https://mastergo.com/goto/KWzbQtxB?file=165290124574010  
-
-### 喵喵电子书安卓客户端
-https://github.com/BandBBS-Vela-Dev/com.bandbbs.ebook-android
+## 可以去米坛下载
 
 这是一个添加在手环顶部连续点击10此才可打开应用和阅读时间统计的改版。同时还更改了桌面图标和名称(包名未更改)。
 ##[原帖](https://github.com/BandBBS-Vela-Dev/com.bandbbs.ebook)
