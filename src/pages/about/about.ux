@@ -1,0 +1,166 @@
+<template>
+  <div class="page">
+    <div static style="position: absolute;left: 0px;top: 0px;width: 212px;height: 520px;">
+      <img static src="/common/images/about.png" style="position: absolute;left: 0px;top: 0px;"/>
+      
+      <!-- 中心点击区域 -->
+      <div class="center-click-area" @click="toggleReadingStats"></div>
+      
+      <!-- 阅读时长统计（条件显示） -->
+      <div class="reading-stats" if="{{showReadingStats}}">
+        <text class="stats-title">阅读统计</text>
+        <text class="stats-item">今日阅读: {{formatTodayTime(todayReadingTime)}}</text>
+        <text class="stats-item">累计阅读: {{formatTotalTime(totalReadingTime)}}</text>
+      </div>
+
+      <img static src="/common/images/back.png" @click="back('')" style="position: absolute;left: 49.5px;top: 6.6px;width: 113px;height: 80px;"/>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+import app from '@system.app'
+import storage from '../../common/storage.js'
+
+export default {
+  private: {
+    todayReadingTime: 0,    // 今日阅读时长（秒）
+    totalReadingTime: 0,    // 累计阅读时长（秒）
+    lastReadingDate: '',
+    showReadingStats: false // 控制统计信息显示
+  },
+  onInit() {
+    this.loadReadingStats();
+  },
+  onShow() {
+    // 每次进入关于页面时隐藏统计信息
+    this.showReadingStats = false;
+    this.loadReadingStats();
+  },
+  loadReadingStats() {
+    const that = this;
+    storage.get({
+      key: 'EBOOK_READING_STATS',
+      success: function(data) {
+        if (data) {
+          const stats = JSON.parse(data);
+          that.todayReadingTime = stats.todayReadingTime || 0;
+          that.totalReadingTime = stats.totalReadingTime || 0;
+          that.lastReadingDate = stats.lastReadingDate || '';
+        }
+      },
+      fail: function() {
+        that.todayReadingTime = 0;
+        that.totalReadingTime = 0;
+      }
+    });
+  },
+  // 切换统计信息显示/隐藏
+  toggleReadingStats() {
+    this.showReadingStats = !this.showReadingStats;
+  },
+  // 格式化今日阅读时长（秒 -> 分钟）
+  formatTodayTime(seconds) {
+    if (!seconds || seconds < 0) return '0分钟';
+    
+    const minutes = Math.floor(seconds / 60);
+    
+    if (minutes === 0) {
+      return '小于1分钟';
+    } else if (minutes < 60) {
+      return `${minutes}分钟`;
+    } else {
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      if (remainingMinutes === 0) {
+        return `${hours}小时`;
+      } else {
+        return `${hours}小时${remainingMinutes}分钟`;
+      }
+    }
+  },
+  // 格式化累计阅读时长（秒 -> 天）
+  formatTotalTime(seconds) {
+    if (!seconds || seconds < 0) return '0天';
+    
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    
+    if (days === 0) {
+      if (hours === 0) {
+        return '小于1天';
+      } else {
+        return '小于1天';
+      }
+    } else if (days < 30) {
+      return `${days}天`;
+    } else {
+      const months = Math.floor(days / 30);
+      const remainingDays = days % 30;
+      if (remainingDays === 0) {
+        return `${months}个月`;
+      } else {
+        return `${months}个月${remainingDays}天`;
+      }
+    }
+  },
+  back() {
+    router.back();
+  }
+}
+</script>
+
+<style>
+.page {
+  width: 212px;
+  height: 520px;
+  background-color: #000000;
+}
+
+/* 中心点击区域 */
+.center-click-area {
+  position: absolute;
+  left: 56px;
+  top: 150px;
+  width: 100px;
+  height: 220px;
+  /* 透明区域，用于接收点击事件 */
+}
+
+/* 阅读统计容器 */
+.reading-stats {
+  position: absolute;
+  left: 0px;
+  top: 150px;
+  width: 212px;
+  height: 200px;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 15px;
+  padding: 10px 0;
+}
+
+/* 统计标题 */
+.stats-title {
+  width: 212px;
+  height: 40px;
+  font-weight: bold;
+  font-size: 30px;
+  color: #666666; /* 深灰色 */
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* 统计项目 */
+.stats-item {
+  width: 212px;
+  height: 30px;
+  font-size: 24px;
+  color: #666666; /* 深灰色 */
+  text-align: center;
+  margin-bottom: 10px;
+}
+</style>
