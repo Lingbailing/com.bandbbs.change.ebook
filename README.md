@@ -3,34 +3,9 @@
 ### 喵喵电子书多端设计稿  
 https://mastergo.com/goto/KWzbQtxB?file=165290124574010  
 
-### 喵喵电子书安卓客户端  
-https://github.com/BandBBS-Vela-Dev/com.bandbbs.ebook-android
+### 喵喵电子书安卓客户端请在app文件中下载
 
-### 喵喵电子书 AstroBox 插件端  
-https://github.com/leset0ng/com.bandbbs.ebook-AstroBox
-</br></br>
-
-## 快速上手
-
-### 1. 开发
-
-```
-npm install
-npm run start
-```
-
-### 2. 构建
-
-```
-npm run build
-npm run release
-```
-
-### 3. 调试
-
-```
-npm run watch
-```
+这是一个改版，
 
 ## 了解更多
 
